@@ -1,0 +1,8 @@
+### login api
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email":"owner@gmail.com",
+    "password":"Owner@12"
+}

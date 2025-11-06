@@ -11,7 +11,7 @@ interface CardTypes {
 const Card: FC<CardTypes> = ({ item, onPress }) => {
   return (
     <TouchableOpacity
-      className="flex-1 px-3 py-4 bg-white shadow-lg relative rounded-md overflow-hidden"
+      className="flex-1  px-3 py-4 bg-white shadow-lg relative rounded-md overflow-hidden"
       onPress={onPress}
     >
       <View className="flex flex-row items-center absolute px-2 top-5 right-5 bg-white/90 p-1 rounded-full z-50">

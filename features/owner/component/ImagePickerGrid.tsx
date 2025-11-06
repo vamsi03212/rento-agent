@@ -23,8 +23,8 @@ const ImagePickerGrid: React.FC<ImagePickerGridProps> = ({
   maxImages = 6,
 }) => {
   const { width } = Dimensions.get("window");
-  const numColumns = 2; // ✅ Only 2 items per row
-  const itemSize = (width - 60) / numColumns; // Adjust spacing cleanly
+  const numColumns = 2;
+  const itemSize = (width - 60) / numColumns - 29;
 
   const requestMediaPermission = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
