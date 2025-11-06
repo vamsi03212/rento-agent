@@ -1,3 +1,12 @@
 ### get home properties
 GET {{baseUrl}}/api/owner/get-property/46?page=1&limit=10
 Content-Type: application/json
+
+### get servie
+GET {{baseUrl}}/api/admin/service/get-service
+Content-Type: application/json
+
+### get dashboard number info
+GET {{baseUrl}}/api/owner/dashboard/get-dashboard-info/46
+Content-Type: application/json
+

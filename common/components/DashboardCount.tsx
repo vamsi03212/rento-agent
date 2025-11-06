@@ -1,14 +1,13 @@
-import { Calendar, DollarSign, House, Settings } from "lucide-react-native";
 import React from "react";
 import { Text, View } from "react-native";
 
 // Define the type for each dashboard item
 interface DashboardItem {
-  id: string;
+  // id: string;
   title: string;
   value: number;
-  icon: React.ElementType;
-  subText: string;
+  // icon: React.ElementType;
+  // subText: string;
 }
 
 interface DashboardCardProps {
@@ -26,7 +25,7 @@ const colors = [
 ];
 
 export const DashboardCount: React.FC<DashboardCardProps> = ({ item }) => {
-  const Icon = item.icon;
+  // const Icon = item.icon;
   return (
     <View
       className="  bg-gray-100 rounded-2xl p-5 mb-4"
@@ -46,38 +45,38 @@ export const DashboardCount: React.FC<DashboardCardProps> = ({ item }) => {
       >
         {item.value}
       </Text>
-      <Text className="text-[9px] pl-2 -mt-2">{item.subText}</Text>
+      <Text className="text-[9px] pl-2 -mt-2">Houses</Text>
     </View>
   );
 };
 
-export const dashboardData: DashboardItem[] = [
-  {
-    id: "1",
-    title: "Posted Properties",
-    value: 65,
-    icon: House,
-    subText: "houses",
-  },
-  {
-    id: "2",
-    title: "Rental Amount",
-    value: 30,
-    icon: DollarSign,
-    subText: "collected",
-  },
-  {
-    id: "3",
-    title: "Tenant Slot",
-    value: 12,
-    icon: Calendar,
-    subText: "booked",
-  },
-  {
-    id: "4",
-    title: "Service Booking",
-    value: 7,
-    icon: Settings,
-    subText: "scheduled",
-  },
-];
+// export const dashboardData: DashboardItem[] = [
+//   {
+//     id: "1",
+//     title: "Posted Properties",
+//     value: 65,
+//     icon: House,
+//     subText: "houses",
+//   },
+//   {
+//     id: "2",
+//     title: "Rental Amount",
+//     value: 30,
+//     icon: DollarSign,
+//     subText: "collected",
+//   },
+//   {
+//     id: "3",
+//     title: "Tenant Slot",
+//     value: 12,
+//     icon: Calendar,
+//     subText: "booked",
+//   },
+//   {
+//     id: "4",
+//     title: "Service Booking",
+//     value: 7,
+//     icon: Settings,
+//     subText: "scheduled",
+//   },
+// ];

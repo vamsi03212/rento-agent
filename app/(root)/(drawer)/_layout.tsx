@@ -107,10 +107,18 @@ const CustomDrawer = (props: any) => {
       ? [...commonItems, ...ownerItems]
       : [...commonItems, ...agentItems];
 
+  const handleNavigation = () => {
+    if (user) {
+      router.push("/ProfileScreen");
+    } else {
+      router.push("/ProfileScreen");
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Drawer Header */}
-      <Pressable style={styles.header}>
+      <Pressable style={styles.header} onPress={handleNavigation}>
         <Image
           source={{
             uri:
