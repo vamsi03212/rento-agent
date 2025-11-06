@@ -30,7 +30,10 @@ const AddPost = () => {
   } = useAddPostHook();
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView
+      className="flex-1 bg-white"
+      edges={["left", "right", "bottom"]}
+    >
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         className="flex-1"
@@ -40,7 +43,7 @@ const AddPost = () => {
             contentContainerStyle={{
               flexGrow: 1,
               padding: 20,
-              paddingBottom: 180,
+              // paddingBottom: 180,
             }}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}

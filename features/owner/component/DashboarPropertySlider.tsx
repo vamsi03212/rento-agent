@@ -1,33 +1,19 @@
 import Card from "@/common/components/Card";
 import React from "react";
-import { Dimensions, ScrollView, View } from "react-native";
+import { View } from "react-native";
 
 const DashboardPropertySlider = () => {
-  const data = [1, 2, 3];
-  const screenWidth = Dimensions.get("window").width;
-  const cardWidth = screenWidth * 0.7;
-  const cardMargin = 12;
+  const data = [1, 2, 3, 4, 5, 6];
+  // const screenWidth = Dimensions.get("window").width;
 
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{
-        alignItems: "flex-start",
-      }}
-    >
-      {data.map((item, index) => (
-        <View
-          key={index}
-          style={{
-            width: cardWidth,
-            marginRight: cardMargin,
-          }}
-        >
+    <View className="flex flex-row flex-wrap justify-between gap-4">
+      {data?.map((item) => (
+        <View key={item} style={{ width: "47%" }}>
           <Card />
         </View>
       ))}
-    </ScrollView>
+    </View>
   );
 };
 

@@ -1,0 +1,3 @@
+### get home properties
+GET {{baseUrl}}/api/owner/get-property/46?page=1&limit=10
+Content-Type: application/json

@@ -1,24 +1,29 @@
-import HeaderAvathar from "@/common/components/HeaderAvathar";
+import {
+  DashboardCount,
+  dashboardData,
+} from "@/common/components/DashboardCount";
+import ServiceTextCard from "@/common/components/ServiceCard";
 import TextWithSeeAll from "@/common/components/TextWithSeeAll";
-import DashboardPropertySlider from "@/features/owner/component/DashboarPropertySlider";
-import ServiceProvideCard from "@/features/owner/component/ServiceProvideCard";
-import { DashboardCount, dashboardData } from "@/utils/DashboardCount";
+import React from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-export default function Index() {
+import DashboardPropertySlider from "../component/DashboarPropertySlider";
+import { dummyServices } from "../data/dummy-services";
+const OwnerDashboard = () => {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 24 - 16) / 2 - 9;
 
   return (
-    <SafeAreaView className="h-full bg-white">
+    <SafeAreaView
+      className="flex-1 bg-white"
+      edges={["left", "right", "bottom"]}
+    >
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 50 }}
+        contentContainerStyle={{ paddingBottom: 50, paddingTop: 20 }}
         showsVerticalScrollIndicator={false}
       >
         <View className="px-4 gap-4">
-          <HeaderAvathar />
-          <View className="flex-row flex-wrap p-3 justify-between">
+          <View className="flex-row flex-wrap  justify-between">
             {dashboardData.map((item) => (
               <View key={item.id} style={{ width: cardWidth }}>
                 <DashboardCount item={item} />
@@ -28,19 +33,13 @@ export default function Index() {
           <TextWithSeeAll title="Listed Properties" />
 
           <DashboardPropertySlider />
+          <View />
           <TextWithSeeAll title="Services we provide" />
-          <ServiceProvideCard
-            services={[
-              "AC Repair",
-              "Plumber",
-              "General Handyman",
-              "Appliances Repair",
-              "Washing Machine",
-              "Paint",
-            ]}
-          />
+          <ServiceTextCard service={dummyServices} />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+export default OwnerDashboard;

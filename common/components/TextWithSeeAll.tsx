@@ -13,10 +13,10 @@ const TextWithSeeAll: FC<TextWithSeeAllProps> = ({
   onSeeAllPress,
 }) => {
   return (
-    <View className="flex w-full flex-row items-center justify-between">
+    <View className="flex w-full flex-row items-center justify-between ">
       <Text
         style={{ fontFamily: "poppins-medium" }}
-        className="text-base font-poppins-bold text-black-300"
+        className="text-lg font-poppins-bold text-black-300"
       >
         {title}
       </Text>

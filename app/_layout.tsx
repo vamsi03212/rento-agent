@@ -1,3 +1,4 @@
+import OfflineBanner from "@/common/components/OfflineBanner";
 import {
   Poppins_300Light,
   Poppins_400Regular,
@@ -9,8 +10,11 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import Toast from "react-native-toast-message";
 import "./global.css";
+
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     "poppins-light": Poppins_300Light,
@@ -30,5 +34,12 @@ export default function RootLayout() {
   if (!fontsLoaded) {
     return null;
   }
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <>
+      <StatusBar style="dark" backgroundColor="transparent" />
+      <OfflineBanner />
+      <Stack screenOptions={{ headerShown: false }} />;
+      <Toast />
+    </>
+  );
 }
