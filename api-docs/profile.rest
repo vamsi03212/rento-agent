@@ -1,0 +1,3 @@
+### get profile
+GET {{baseUrl}}/api/admin/category/country/get-country
+Content-Type: application/json

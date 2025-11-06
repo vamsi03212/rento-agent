@@ -1,17 +1,26 @@
-import {
-  DashboardCount,
-  dashboardData,
-} from "@/common/components/DashboardCount";
+import { DashboardCount } from "@/common/components/DashboardCount";
+import DataWrapper from "@/common/components/DataWrapper";
 import ServiceTextCard from "@/common/components/ServiceCard";
 import TextWithSeeAll from "@/common/components/TextWithSeeAll";
 import React from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DashboardPropertySlider from "../component/DashboarPropertySlider";
-import { dummyServices } from "../data/dummy-services";
+import { useOwnerDashbaordCountHook } from "../hooks/owner-dashboard-count.hook";
+import { useOwnerGetServiceHook } from "../hooks/owner-get-services.hook";
 const OwnerDashboard = () => {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 24 - 16) / 2 - 9;
+
+  const { service, error, loading } = useOwnerGetServiceHook();
+
+  const {
+    dashboardCounts,
+    error: countError,
+    loading: countLoading,
+  } = useOwnerDashbaordCountHook();
+
+  // console.log("dashboardCounts", dashboardCounts);
 
   return (
     <SafeAreaView
@@ -23,19 +32,23 @@ const OwnerDashboard = () => {
         showsVerticalScrollIndicator={false}
       >
         <View className="px-4 gap-4">
-          <View className="flex-row flex-wrap  justify-between">
-            {dashboardData.map((item) => (
-              <View key={item.id} style={{ width: cardWidth }}>
-                <DashboardCount item={item} />
-              </View>
-            ))}
-          </View>
+          <DataWrapper loading={countLoading} error={countError}>
+            <View className="flex-row flex-wrap  justify-between">
+              {dashboardCounts?.map((item) => (
+                <View key={item.title} style={{ width: cardWidth }}>
+                  <DashboardCount item={item} />
+                </View>
+              ))}
+            </View>
+          </DataWrapper>
           <TextWithSeeAll title="Listed Properties" />
 
           <DashboardPropertySlider />
           <View />
           <TextWithSeeAll title="Services we provide" />
-          <ServiceTextCard service={dummyServices} />
+          <DataWrapper loading={loading} error={error}>
+            <ServiceTextCard service={service ?? []} />
+          </DataWrapper>
         </View>
       </ScrollView>
     </SafeAreaView>
