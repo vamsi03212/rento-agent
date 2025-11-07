@@ -4,6 +4,7 @@ import feature2 from "@/assets/images/feature2.png";
 import feature1 from "@/assets/images/features1.png";
 import map from "@/assets/images/map.png";
 import whiteGradient from "@/assets/images/white-gradient.png";
+import wishlistempty from "@/assets/images/wishlist-empty-2.jpg";
 
 export default {
   cardGradient,
@@ -12,4 +13,5 @@ export default {
   avatar,
   whiteGradient,
   map,
+  wishlistempty,
 };

@@ -28,7 +28,6 @@ const Card: FC<CardTypes> = ({ property, onPress }) => {
       onPress={onPress}
       activeOpacity={0.9}
     >
-      {/* ⭐ Rating Badge */}
       <View className="flex flex-row items-center absolute px-2 top-6 right-3 rounded-full z-50">
         <View className={`px-3 py-1 rounded-full ${colorSet.bg}`}>
           <Text

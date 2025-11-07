@@ -38,9 +38,22 @@ export default function DrawerLayout() {
           ),
         }}
       />
+      {/* owner properties */}
       <Drawer.Screen
         name="addpost"
         options={{ header: () => <CustomHeader title="Add Property" /> }}
+      />
+      <Drawer.Screen
+        name="(owner)/manager-property"
+        options={{ header: () => <CustomHeader title="Manager Property" /> }}
+      />
+      <Drawer.Screen
+        name="enquiry"
+        options={{ header: () => <CustomHeader title="Enquiry" /> }}
+      />
+      <Drawer.Screen
+        name="service-bookings"
+        options={{ header: () => <CustomHeader title="Service Bookings" /> }}
       />
       <Drawer.Screen
         name="notification"
@@ -75,7 +88,6 @@ const CustomDrawer = (props: any) => {
 
   // 🧠 Role-based drawer items
   const commonItems = [
-    { label: "Home", icon: Home, route: "index" },
     { label: "Notification", icon: CreditCard, route: "notification" },
     { label: "Payment History", icon: CreditCard, route: "payment-history" },
     { label: "Support", icon: LifeBuoy, route: "support" },
@@ -83,8 +95,13 @@ const CustomDrawer = (props: any) => {
 
   const ownerItems = [
     { label: "Add Property", icon: CirclePlus, route: "addpost" },
-    { label: "Renter Property", icon: ClipboardList, route: "renter-property" },
+    {
+      label: "Manage Property",
+      icon: ClipboardList,
+      route: "(owner)/manager-property",
+    },
     { label: "Enquiry", icon: Kayak, route: "enquiry" },
+    { label: "Service Booking", icon: Calendar, route: "service-bookings" },
   ];
 
   const agentItems = [
@@ -104,7 +121,11 @@ const CustomDrawer = (props: any) => {
 
   const roleItems =
     user?.role === "owner"
-      ? [...commonItems, ...ownerItems]
+      ? [
+          { label: "Home", icon: Home, route: "index" },
+          ...ownerItems,
+          ...commonItems,
+        ]
       : [...commonItems, ...agentItems];
 
   const handleNavigation = () => {

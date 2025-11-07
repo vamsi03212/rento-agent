@@ -1,11 +1,11 @@
 import { DashboardCount } from "@/common/components/DashboardCount";
 import DataWrapper from "@/common/components/DataWrapper";
-import ServiceTextCard from "@/common/components/ServiceCard";
 import TextWithSeeAll from "@/common/components/TextWithSeeAll";
 import React from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DashboardPropertySlider from "../component/DashboarPropertySlider";
+import ServiceTextCard from "../component/ServiceCard";
 import { useOwnerDashbaordCountHook } from "../hooks/owner-dashboard-count.hook";
 import { useOwnerGetServiceHook } from "../hooks/owner-get-services.hook";
 const OwnerDashboard = () => {
@@ -19,8 +19,6 @@ const OwnerDashboard = () => {
     error: countError,
     loading: countLoading,
   } = useOwnerDashbaordCountHook();
-
-  // console.log("dashboardCounts", dashboardCounts);
 
   return (
     <SafeAreaView
