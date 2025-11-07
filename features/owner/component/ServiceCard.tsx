@@ -1,5 +1,4 @@
 import { shadowStyles } from "@/common/styles/shadow-styles";
-import { ServiceType } from "@/features/owner/types/service.types";
 // import { ServiceType } from "@/features/owner/types/service.types";
 import {
   Fan,
@@ -12,11 +11,14 @@ import {
 } from "lucide-react-native";
 import { FC } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useServiceTextCardHook } from "../hooks/service-text-card.hook";
+import ServiceBookingModal from "../modals/ServiceBookingModal";
+import { ServiceType } from "../types/service-provided.types";
 // import { useServiceTextCardHook } from "../hooks/service-text-card.hook";
 // import BookServiceModal from "../modals/BookServiceModal";
 
 export const getServiceIcon = (name: string, size: number) => {
-  switch (name.toLowerCase()) {
+  switch (name?.toLowerCase()) {
     case "plumber":
       return <Wrench color="#2563EB" size={size} />; // bigger icons
     case "electric work":
@@ -41,13 +43,13 @@ type ServiceTextCardType = {
 };
 
 const ServiceTextCard: FC<ServiceTextCardType> = ({ service }) => {
-  //   const {
-  //     displayBottom,
-  //     setDisplayBottom,
-  //     handelSelectService,
-  //     serviceType,
-  //     price,
-  //   } = useServiceTextCardHook();
+  const {
+    displayBottom,
+    setDisplayBottom,
+    handelSelectService,
+    serviceType,
+    price,
+  } = useServiceTextCardHook();
 
   return (
     <>
@@ -55,7 +57,7 @@ const ServiceTextCard: FC<ServiceTextCardType> = ({ service }) => {
         {service?.map((item) => (
           <Pressable
             key={item.id}
-            // onPress={() => handelSelectService(item)}
+            onPress={() => handelSelectService(item)}
             style={[styles.card, shadowStyles.shadow]}
             android_ripple={{ color: "#E5E7EB" }}
           >
@@ -69,10 +71,16 @@ const ServiceTextCard: FC<ServiceTextCardType> = ({ service }) => {
                 : item.service_name}
             </Text>
 
-            {/* <Text style={styles.subtitle}>Tap to book now</Text> */}
+            <Text style={styles.subtitle}>Tap to book now</Text>
           </Pressable>
         ))}
       </View>
+      <ServiceBookingModal
+        open={displayBottom}
+        onClose={() => setDisplayBottom(false)}
+        serviceType={serviceType}
+        price={price}
+      />
     </>
   );
 };

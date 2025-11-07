@@ -135,6 +135,14 @@ export const facilities = [
     title: "Pet Center",
     icon: icons.dog,
   },
+  {
+    title: "CCTV",
+    icon: icons.cctv,
+  },
+  {
+    title: "Elevator",
+    icon: icons.elevator,
+  },
 ];
 
 export const gallery = [

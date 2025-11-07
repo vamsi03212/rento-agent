@@ -1,4 +1,4 @@
-interface LatestPropertyImage {
+export interface LatestPropertyImage {
   id: number;
   image: string; // path to image
   originalFileName: string;

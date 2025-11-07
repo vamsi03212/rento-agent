@@ -1,17 +1,17 @@
 import { usePaginatedFetch } from "@/common/hooks/usePaginatedFetch";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
 import { useLocalSearchParams } from "expo-router";
-import { getAllOwnPropertiesApi } from "../services/fetch-properties.service";
+import { getEnquiryApi } from "../services/enquiry.service";
 
-export const useFetchPropertiesHook = ({ limit = 10 } = {}) => {
+export const useOwnerEnquiryHook = ({ limit = 10 } = {}) => {
   const user = useAuthStore((state) => state.user);
   const { query } = useLocalSearchParams<{ query?: string }>();
 
   const fetchFn = async (page: number) => {
     if (!user?.id) return { data: [], meta: {} };
 
-    const res = await getAllOwnPropertiesApi({
-      id: user.id,
+    const res = await getEnquiryApi({
+      userId: user.id,
       page,
       limit,
       search: query || "",
@@ -24,7 +24,7 @@ export const useFetchPropertiesHook = ({ limit = 10 } = {}) => {
   };
 
   const {
-    items: properties,
+    items: enquiry,
     meta,
     loading,
     isPaginating,
@@ -39,7 +39,7 @@ export const useFetchPropertiesHook = ({ limit = 10 } = {}) => {
   });
 
   return {
-    properties,
+    enquiry,
     meta,
     loading,
     isPaginating,

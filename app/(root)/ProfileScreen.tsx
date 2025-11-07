@@ -6,6 +6,7 @@ import {
   FormFields,
   useProfileScreenHook,
 } from "@/features/profile/hooks/profile.hook";
+import ChangePasswordModal from "@/features/profile/modal/ChangePasswordModal";
 
 import { Picker } from "@react-native-picker/picker";
 import { useIsFocused } from "@react-navigation/native";
@@ -49,6 +50,7 @@ const ProfileScreen = () => {
     setIsEditing,
     //
     countries,
+    forgotPasswordModal,
     setForgotPasswordModal,
   } = useProfileScreenHook();
 
@@ -89,237 +91,244 @@ const ProfileScreen = () => {
     ];
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-      style={{ flex: 1 }}
-    >
-      <View className="flex-1 bg-gray-50">
-        {isFocused && (
-          <StatusBar
-            barStyle="light-content"
-            backgroundColor="#932537"
-            translucent={false}
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+        style={{ flex: 1 }}
+      >
+        <View className="flex-1 bg-gray-50">
+          {isFocused && (
+            <StatusBar
+              barStyle="light-content"
+              backgroundColor="#932537"
+              translucent={false}
+            />
+          )}
+          <ProfileHeader
+            form={form}
+            handleChange={handleChange}
+            isEditing={isEditing}
           />
-        )}
-        <ProfileHeader
-          form={form}
-          handleChange={handleChange}
-          isEditing={isEditing}
-        />
-        {loading ? (
-          <View className="flex-1 justify-center items-center">
-            <ActivityIndicator size="large" color="#932537" />
-          </View>
-        ) : (
-          <ScrollView
-            contentContainerStyle={{ paddingBottom: 40 }}
-            className="px-5 mt-6"
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
-            <View className="flex-row justify-between items-center mb-3">
-              <Text className="text-lg font-semibold text-gray-800">
-                Profile Details
-              </Text>
-              {isEditing ? (
-                <View className="flex-row gap-2">
+          {loading ? (
+            <View className="flex-1 justify-center items-center">
+              <ActivityIndicator size="large" color="#932537" />
+            </View>
+          ) : (
+            <ScrollView
+              contentContainerStyle={{ paddingBottom: 40 }}
+              className="px-5 mt-6"
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+            >
+              <View className="flex-row justify-between items-center mb-3">
+                <Text className="text-lg font-semibold text-gray-800">
+                  Profile Details
+                </Text>
+                {isEditing ? (
+                  <View className="flex-row gap-2">
+                    <TouchableOpacity
+                      onPress={handleSubmit}
+                      className="bg-[#932537] p-2 rounded-full"
+                    >
+                      <Check size={18} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={handleCancelEdit}
+                      className="bg-gray-400 p-2 rounded-full"
+                    >
+                      <X size={18} color="white" />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
                   <TouchableOpacity
-                    onPress={handleSubmit}
+                    onPress={() => setIsEditing(true)}
                     className="bg-[#932537] p-2 rounded-full"
                   >
-                    <Check size={18} color="white" />
+                    <Pencil size={18} color="white" />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={handleCancelEdit}
-                    className="bg-gray-400 p-2 rounded-full"
-                  >
-                    <X size={18} color="white" />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => setIsEditing(true)}
-                  className="bg-[#932537] p-2 rounded-full"
+                )}
+              </View>
+              {fields.map((field) => (
+                <View
+                  key={field.key}
+                  className="bg-white rounded-2xl p-4 mb-3 shadow-sm flex-row items-start gap-3"
                 >
-                  <Pencil size={18} color="white" />
-                </TouchableOpacity>
-              )}
-            </View>
-            {fields.map((field) => (
-              <View
-                key={field.key}
-                className="bg-white rounded-2xl p-4 mb-3 shadow-sm flex-row items-start gap-3"
-              >
-                <View className="pt-1">{field.icon}</View>
+                  <View className="pt-1">{field.icon}</View>
+                  <View className="flex-1">
+                    <Text className="text-gray-500 text-sm mb-1">
+                      {field.label}
+                    </Text>
+                    {isEditing ? (
+                      <TextInput
+                        value={form[field.key]}
+                        onChangeText={(v) => handleChange(field.key, v)}
+                        placeholder={field.label}
+                        className="border-b border-[#932537]/20 text-gray-800 mb-1"
+                      />
+                    ) : (
+                      <Text className="text-gray-800 text-base">
+                        {form[field.key]}
+                      </Text>
+                    )}
+                    {errors[field.key] && (
+                      <Text className="text-red-500 text-xs mt-1">
+                        {errors[field.key]}
+                      </Text>
+                    )}
+                  </View>
+                </View>
+              ))}
+
+              <View className="bg-white rounded-2xl p-4 mb-3 shadow-sm flex-row items-start gap-3">
+                <View className="pt-1">
+                  <MapPin size={18} color="#932537" />
+                </View>
                 <View className="flex-1">
-                  <Text className="text-gray-500 text-sm mb-1">
-                    {field.label}
-                  </Text>
+                  <Text className="text-gray-500 text-sm mb-1">Country</Text>
                   {isEditing ? (
-                    <TextInput
-                      value={form[field.key]}
-                      onChangeText={(v) => handleChange(field.key, v)}
-                      placeholder={field.label}
-                      className="border-b border-[#932537]/20 text-gray-800 mb-1"
-                    />
+                    <Picker
+                      selectedValue={form.country}
+                      onValueChange={(value) => handleChange("country", value)}
+                      style={{ color: "#1F2937" }}
+                    >
+                      <Picker.Item label="Select Country" value="" />
+                      {countries.map((c) => (
+                        <Picker.Item
+                          key={c.id}
+                          label={c.country}
+                          value={c.country}
+                        />
+                      ))}
+                    </Picker>
                   ) : (
                     <Text className="text-gray-800 text-base">
-                      {form[field.key]}
+                      {form.country || "—"}
                     </Text>
                   )}
-                  {errors[field.key] && (
+                  {errors.country && (
                     <Text className="text-red-500 text-xs mt-1">
-                      {errors[field.key]}
+                      {errors.country}
                     </Text>
                   )}
                 </View>
               </View>
-            ))}
+              {/* city */}
+              <View className="bg-white rounded-2xl p-4 mb-3 shadow-sm flex-row items-start gap-3">
+                <View className="pt-1">
+                  <MapPin size={18} color="#932537" />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-gray-500 text-sm mb-1">City</Text>
 
-            <View className="bg-white rounded-2xl p-4 mb-3 shadow-sm flex-row items-start gap-3">
-              <View className="pt-1">
-                <MapPin size={18} color="#932537" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-gray-500 text-sm mb-1">Country</Text>
-                {isEditing ? (
-                  <Picker
-                    selectedValue={form.country}
-                    onValueChange={(value) => handleChange("country", value)}
-                    style={{ color: "#1F2937" }}
-                  >
-                    <Picker.Item label="Select Country" value="" />
-                    {countries.map((c) => (
-                      <Picker.Item
-                        key={c.id}
-                        label={c.country}
-                        value={c.country}
+                  {isEditing ? (
+                    <>
+                      <TextInput
+                        value={form.city}
+                        onChangeText={(text) => {
+                          handleChange("city", text);
+                          fetchCitySuggestions(text, form.country);
+                        }}
+                        placeholder="Search city..."
+                        className="border-b border-[#932537]/20 text-gray-800 mb-1"
+                        editable={!!form.country}
                       />
-                    ))}
-                  </Picker>
-                ) : (
-                  <Text className="text-gray-800 text-base">
-                    {form.country || "—"}
-                  </Text>
-                )}
-                {errors.country && (
-                  <Text className="text-red-500 text-xs mt-1">
-                    {errors.country}
-                  </Text>
-                )}
-              </View>
-            </View>
-            {/* city */}
-            <View className="bg-white rounded-2xl p-4 mb-3 shadow-sm flex-row items-start gap-3">
-              <View className="pt-1">
-                <MapPin size={18} color="#932537" />
-              </View>
-              <View className="flex-1">
-                <Text className="text-gray-500 text-sm mb-1">City</Text>
 
-                {isEditing ? (
-                  <>
-                    <TextInput
-                      value={form.city}
-                      onChangeText={(text) => {
-                        handleChange("city", text);
-                        fetchCitySuggestions(text, form.country);
-                      }}
-                      placeholder="Search city..."
-                      className="border-b border-[#932537]/20 text-gray-800 mb-1"
-                      editable={!!form.country}
-                    />
-
-                    {isFetchingCities && (
-                      <View className="flex-row items-center mt-2">
-                        <ActivityIndicator size="small" color="#932537" />
-                        <Text className="ml-2 text-gray-500 text-sm">
-                          Searching cities...
-                        </Text>
-                      </View>
-                    )}
-
-                    {!isFetchingCities &&
-                      showCitySuggestions &&
-                      citySuggestions?.length > 0 && (
-                        <View className="rounded-lg mt-2 border border-gray-200 bg-white">
-                          <TouchableOpacity
-                            key={`${citySuggestions[0].name}-0`}
-                            onPress={() => {
-                              handleChange("city", citySuggestions[0].name);
-                              fetchCitySuggestions("", form.country);
-                            }}
-                            className="px-3 py-2 border-b border-gray-200 active:bg-gray-50"
-                          >
-                            <Text className="text-gray-800 font-medium">
-                              {citySuggestions[0].name}
-                            </Text>
-
-                            {citySuggestions[0].state ? (
-                              <Text className="text-xs text-gray-500 mt-0.5">
-                                {citySuggestions[0].state},{" "}
-                                {citySuggestions[0].country}
-                              </Text>
-                            ) : null}
-                          </TouchableOpacity>
+                      {isFetchingCities && (
+                        <View className="flex-row items-center mt-2">
+                          <ActivityIndicator size="small" color="#932537" />
+                          <Text className="ml-2 text-gray-500 text-sm">
+                            Searching cities...
+                          </Text>
                         </View>
                       )}
 
-                    {!isFetchingCities &&
-                      showCitySuggestions &&
-                      citySuggestions?.length === 0 &&
-                      form.city.length >= 2 &&
-                      form.city !== citySuggestions[0]?.name && (
-                        <Text className="text-gray-500 text-sm mt-2">
-                          No cities found. Try different spelling.
+                      {!isFetchingCities &&
+                        showCitySuggestions &&
+                        citySuggestions?.length > 0 && (
+                          <View className="rounded-lg mt-2 border border-gray-200 bg-white">
+                            <TouchableOpacity
+                              key={`${citySuggestions[0].name}-0`}
+                              onPress={() => {
+                                handleChange("city", citySuggestions[0].name);
+                                fetchCitySuggestions("", form.country);
+                              }}
+                              className="px-3 py-2 border-b border-gray-200 active:bg-gray-50"
+                            >
+                              <Text className="text-gray-800 font-medium">
+                                {citySuggestions[0].name}
+                              </Text>
+
+                              {citySuggestions[0].state ? (
+                                <Text className="text-xs text-gray-500 mt-0.5">
+                                  {citySuggestions[0].state},{" "}
+                                  {citySuggestions[0].country}
+                                </Text>
+                              ) : null}
+                            </TouchableOpacity>
+                          </View>
+                        )}
+
+                      {!isFetchingCities &&
+                        showCitySuggestions &&
+                        citySuggestions?.length === 0 &&
+                        form.city.length >= 2 &&
+                        form.city !== citySuggestions[0]?.name && (
+                          <Text className="text-gray-500 text-sm mt-2">
+                            No cities found. Try different spelling.
+                          </Text>
+                        )}
+
+                      {!form.country && (
+                        <Text className="text-gray-400 text-xs mt-1">
+                          Please select a country first
                         </Text>
                       )}
+                    </>
+                  ) : (
+                    <Text className="text-gray-800 text-base">
+                      {form.city || "—"}
+                    </Text>
+                  )}
 
-                    {!form.country && (
-                      <Text className="text-gray-400 text-xs mt-1">
-                        Please select a country first
-                      </Text>
-                    )}
-                  </>
-                ) : (
-                  <Text className="text-gray-800 text-base">
-                    {form.city || "—"}
-                  </Text>
-                )}
-
-                {errors.city && (
-                  <Text className="text-red-500 text-xs mt-1">
-                    {errors.city}
-                  </Text>
-                )}
+                  {errors.city && (
+                    <Text className="text-red-500 text-xs mt-1">
+                      {errors.city}
+                    </Text>
+                  )}
+                </View>
               </View>
-            </View>
 
-            <TouchableOpacity
-              onPress={() => setForgotPasswordModal(true)}
-              className="flex-row items-center justify-center mt-6 mb-3"
-            >
-              <Lock size={18} color="#932537" />
-              <Text className="ml-2 text-[#932537] font-semibold">
-                Forgot Password?
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setForgotPasswordModal(true)}
+                className="flex-row items-center justify-center mt-6 mb-3"
+              >
+                <Lock size={18} color="#932537" />
+                <Text className="ml-2 text-[#932537] font-semibold">
+                  Forgot Password?
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={handleLogout}
-              activeOpacity={0.8}
-              className="flex-row items-center justify-center bg-[#932537] rounded-2xl py-3 mt-4 shadow-md"
-            >
-              <LogOut size={20} color="white" />
-              <Text className="ml-2 text-white font-semibold text-base">
-                Logout
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
-        )}
-      </View>
-    </KeyboardAvoidingView>
+              <TouchableOpacity
+                onPress={handleLogout}
+                activeOpacity={0.8}
+                className="flex-row items-center justify-center bg-[#932537] rounded-2xl py-3 mt-4 shadow-md"
+              >
+                <LogOut size={20} color="white" />
+                <Text className="ml-2 text-white font-semibold text-base">
+                  Logout
+                </Text>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
+        </View>
+      </KeyboardAvoidingView>
+
+      <ChangePasswordModal
+        onClose={() => setForgotPasswordModal(false)}
+        open={forgotPasswordModal}
+      />
+    </>
   );
 };
 
